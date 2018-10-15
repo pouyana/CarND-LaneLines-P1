@@ -29,7 +29,7 @@ def grayscale(img):
     return cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 ```
 
-<img src="./images/gray_image.jpeg" alt="Grayscale" width="250"/>
+<img src="./images/gray_image.jpeg" alt="Grayscale" width="350"/>
 
 * Used the gaussian blur to soften small edges. The output of this function will be used by Canny. For the gaussian blur the kernel size of `5` is used.
 
@@ -39,7 +39,7 @@ def gaussian_blur(img, kernel_size):
     return cv2.GaussianBlur(img, (kernel_size, kernel_size), 0)
 ```
 
-<img src="./images/gaussian.jpeg" alt="GaussianBlur" width="250"/>
+<img src="./images/gaussian.jpeg" alt="GaussianBlur" width="350"/>
 
 * Then find the edges take advantage of the Canny function. The canny min threshold was 50 and the max threshold was 150.
 
@@ -48,9 +48,9 @@ def canny(img, low_threshold, high_threshold):
     """Applies the Canny transform"""
     return cv2.Canny(img, low_threshold, high_threshold)
 ```
-<img src="./images/canny.jpeg" alt="Canny" width="250"/>
+<img src="./images/canny.jpeg" alt="Canny" width="350"/>
 
-* After having the edges detected, the interest region should be found. Because for all the images two lane line one in left and the other in right should be found, I decided to create to interest regions, one in left side of the image to the middle. The other from the middle to the right side of the image. Both these region are feed to the Hough transfer to find the lines.
+* After having the edges detected, the interest region should be found. Because for all the images two lane line one in left and the other in right should be found, I decided to create to interest regions, one in left side of the image to the middle. The other from the middle to the right side of the image. Both these region are feed to the Hough transfer to find the lines. 
 
 ```python
 
@@ -118,9 +118,9 @@ def region_of_interest(img, vertices):
     return masked_image
 ```
 
-<img src="./images/region_left.jpeg" alt="Region" width="250"/>
+<img src="./images/region_left.jpeg" alt="Region" width="350"/>
 
-* The found region of interest are feed to the Hough transform, separately and the result is used in the extrapolation function.
+* The found region of interest are feed to the Hough transform, separately and the result is used in the extrapolation function. For the hough lines calculation, the threshold is set to `20`, maximum line gap is `5`, minimum line length is `15`, rho is `1` and theta is `1` degree.
 
 ```python
 def draw_hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap, color=[255, 0, 0], thickness=2):
@@ -152,7 +152,7 @@ def get_hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
     return lines
 ```
 
-<img src="./images/line_image_left.jpeg" alt="Hough" width="250">
+<img src="./images/line_image_left.jpeg" alt="Hough" width="350">
 
 * Using middle point of each line and fitting a line to these points, the extrapolation is done. Then to separate `y`s are given to the fitted function, so the x is calculated. It is also checked that the x is inside the image.
 
@@ -207,10 +207,27 @@ def calculate_middle_point(line):
         return [xM, yM]
 ```
 
-<img src="./images/line_image_left_2.jpeg" alt="Extrapolate" width="250">
+<img src="./images/line_image_left_2.jpeg" alt="Extrapolate" width="350">
 
 * Having to points, the extrapolation line is drawn on the image. For the video, this process is repeated for every frame.
 
+```python
+def weighted_img(img, initial_img, α=0.8, β=1., γ=0.):
+    """
+    `img` is the output of the hough_lines(), An image with lines drawn on it.
+    Should be a blank image (all black) with lines drawn on it.
+    
+    `initial_img` should be the image before any processing.
+    
+    The result image is computed as follows:
+    
+    initial_img * α + img * β + γ
+    NOTE: initial_img and img must be the same shape!
+    """
+    return cv2.addWeighted(initial_img, α, img, β, γ)
+```
+
+<img src="./images/finished.jpeg" alt="finished" width="350">
 
 ### 2. Identify potential shortcomings with your current pipeline
 
