@@ -231,11 +231,11 @@ def weighted_img(img, initial_img, α=0.8, β=1., γ=0.):
 
 ### 2. Identify potential shortcomings with your current pipeline
 
-* One potential shortcoming is the working with the low contrast images. In this images it is hard to find lane line or find the reasonably.
+* One potential shortcoming is the working with the low contrast images. In this images it is hard to find lane line or find them reasonably.
 
 * Another potential problem would be reflection from the cars in front, It would be a white spot in the picture and mix with the lane lines.
 
-* When the lane lines are not drawn correctly or are change for temporary street repairs. This pipeline does not handle irregular lane lines.
+* When the lane lines are not drawn correctly or are changed for temporary street repairs. This pipeline does not handle irregular lane lines.
 
 * For very steep curves it is hard to find the lane lines. The region of interest should be smaller, and this should be done dynamically.
 
