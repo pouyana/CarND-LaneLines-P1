@@ -41,7 +41,7 @@ def gaussian_blur(img, kernel_size):
 
 <img src="./images/gaussian.jpeg" alt="GaussianBlur" width="350"/>
 
-* Then find the edges take advantage of the Canny function. The canny min threshold was 50 and the max threshold was 150.
+* Then find the edges taking advantage of the Canny function. The canny min threshold was 50 and the max threshold was 150.
 
 ```python
 def canny(img, low_threshold, high_threshold):
@@ -50,7 +50,7 @@ def canny(img, low_threshold, high_threshold):
 ```
 <img src="./images/canny.jpeg" alt="Canny" width="350"/>
 
-* After having the edges detected, the interest region should be found. Because for all the images two lane line one in left and the other in right should be found, I decided to create to interest regions, one in left side of the image to the middle. The other from the middle to the right side of the image. Both these region are feed to the Hough transfer to find the lines. 
+* After having the edges detected, the interest region should be found. Because for all the images two lane line one in left and the other in right should be found, I decided to create two interest regions, one in left side of the image to the middle. The other from the middle to the right side of the image. Both these regions are feed to the Hough transfer to find the lines in left and right.
 
 ```python
 
@@ -246,4 +246,3 @@ def weighted_img(img, initial_img, α=0.8, β=1., γ=0.):
 * A possible improvement would be using the vanishing point to find the interest region in the the image. This could be advantage for all kind of roads.
 
 * Using different color spaces, other than RGB could be advantageous, specially working with low contrast images or images with shadows.
-
